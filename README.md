@@ -101,16 +101,47 @@ projet_python_next_u/
 - **develop** : Branche de développement (intégration)
 - **feature/*** : Branches pour nouvelles fonctionnalités
 
+### Structure des branches
+
+```bash
+# Voir toutes les branches
+git branch -a
+
+# Branches principales
+develop          # Branche de développement (active par défaut)
+feature/*         # Branches pour nouvelles fonctionnalités
+```
+
 ### Créer une nouvelle fonctionnalité
 ```bash
+# 1. S'assurer d'être sur develop et à jour
 git checkout develop
-git pull origin develop
+git pull origin develop  # Si dépôt distant existe
+
+# 2. Créer une nouvelle branche feature
 git checkout -b feature/nom-fonctionnalite
-# ... développer ...
+
+# 3. Développer la fonctionnalité
+# ... faire vos modifications ...
+
+# 4. Commiter les changements
 git add .
-git commit -m "Description de la fonctionnalité"
+git commit -m "Description claire de la fonctionnalité"
+
+# 5. Pousser la branche (si dépôt distant existe)
 git push origin feature/nom-fonctionnalite
+
+# 6. Après validation, merger dans develop
+git checkout develop
+git merge feature/nom-fonctionnalite
+git branch -d feature/nom-fonctionnalite  # Supprimer la branche locale
 ```
+
+### Exemples de noms de branches feature
+- `feature/nettoyage-donnees`
+- `feature/cartes-folium`
+- `feature/export-pdf`
+- `feature/filtres-geographiques`
 
 ## 📚 Documentation
 
