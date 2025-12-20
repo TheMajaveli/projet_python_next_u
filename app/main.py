@@ -12,9 +12,7 @@ def index():
     """
     Page d'accueil du dashboard
     """
-    return render_template('index.html', 
-                         title='Dashboard Mobilité',
-                         message='Bienvenue sur le tableau de bord d\'analyse des inégalités de mobilité')
+    return render_template('pages/home.html')
 
 @bp.route('/health')
 def health():

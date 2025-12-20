@@ -11,7 +11,9 @@ def create_app():
     Cette approche permet de créer plusieurs instances de l'app
     (utile pour les tests).
     """
-    app = Flask(__name__)
+    app = Flask(__name__, 
+                template_folder='../templates',
+                static_folder='../static')
     
     # Configuration de base
     app.config['SECRET_KEY'] = 'dev-secret-key-change-in-production'
@@ -19,6 +21,10 @@ def create_app():
     # Enregistrer les routes
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
+    
+    # Enregistrer les routes mobilité
+    from app.routes.mobilite import bp as mobilite_bp
+    app.register_blueprint(mobilite_bp)
     
     return app
 

@@ -1,0 +1,500 @@
+{% extends "base/base.html" %}
+
+{% block title %}Accueil - Dashboard{% endblock %}
+
+{% block content %}
+<!-- En-tête moderne -->
+<div class="row mb-5 fade-in">
+    <div class="col-12 col-lg-10 mx-auto">
+        <div class="text-center mb-4">
+            <h1 class="mb-4" style="font-size: 3rem; font-weight: 800; letter-spacing: -0.03em;">
+                Analyse des inégalités<br>de mobilité en France
+            </h1>
+            <p class="lead" style="font-size: 1.25rem; max-width: 700px; margin: 0 auto;">
+                Comparez les conditions de mobilité entre communes et zones, identifiez les zones mal desservies, 
+                et produisez des indicateurs pour appuyer vos décisions.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Indicateurs clés (KPIs) - Design moderne -->
+<section id="indicateurs" class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Indicateurs Clés</h2>
+        <span class="text-muted" style="font-size: 0.875rem;">Vue d'ensemble nationale</span>
+    </div>
+    <div class="row g-4">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="kpi-card fade-in">
+                <div class="kpi-label">Population sans accès transport</div>
+                <div class="kpi-value">12.5%</div>
+                <div class="kpi-change positive">
+                    <span style="font-size: 1rem;">↗</span>
+                    <span>+0.3% vs moyenne nationale</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="kpi-card fade-in">
+                <div class="kpi-label">Temps moyen domicile-travail</div>
+                <div class="kpi-value">28 min</div>
+                <div class="kpi-change negative">
+                    <span style="font-size: 1rem;">↘</span>
+                    <span>-2 min vs moyenne nationale</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="kpi-card fade-in">
+                <div class="kpi-label">Taux utilisation vélo</div>
+                <div class="kpi-value">8.2%</div>
+                <div class="kpi-change positive">
+                    <span style="font-size: 1rem;">↗</span>
+                    <span>+1.5% vs moyenne nationale</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="kpi-card fade-in">
+                <div class="kpi-label">Taux transports en commun</div>
+                <div class="kpi-value">42.3%</div>
+                <div class="kpi-change positive">
+                    <span style="font-size: 1rem;">↗</span>
+                    <span>+5.2% vs moyenne nationale</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cartes interactives -->
+<section id="cartes" class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Cartes Interactives</h2>
+        <span class="text-muted" style="font-size: 0.875rem;">Visualisations géographiques</span>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <g opacity="0.2">
+                                <line x1="20" y1="0" x2="20" y2="100" stroke="currentColor" stroke-width="0.5"/>
+                                <line x1="50" y1="0" x2="50" y2="100" stroke="currentColor" stroke-width="0.5"/>
+                                <line x1="80" y1="0" x2="80" y2="100" stroke="currentColor" stroke-width="0.5"/>
+                                <line x1="0" y1="20" x2="100" y2="20" stroke="currentColor" stroke-width="0.5"/>
+                                <line x1="0" y1="50" x2="100" y2="50" stroke="currentColor" stroke-width="0.5"/>
+                                <line x1="0" y1="80" x2="100" y2="80" stroke="currentColor" stroke-width="0.5"/>
+                            </g>
+                            <circle cx="30" cy="30" r="3" fill="currentColor"/>
+                            <circle cx="50" cy="50" r="5" fill="currentColor"/>
+                            <circle cx="70" cy="70" r="2" fill="currentColor"/>
+                            <circle cx="20" cy="60" r="2" fill="currentColor"/>
+                            <circle cx="80" cy="30" r="2" fill="currentColor"/>
+                        </svg>
+                        Localisation des Communes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="placeholder-section">
+                        <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1.5rem; opacity: 0.6;">
+                            <g opacity="0.2">
+                                <line x1="20" y1="0" x2="20" y2="100" stroke="currentColor" stroke-width="0.5"/>
+                                <line x1="50" y1="0" x2="50" y2="100" stroke="currentColor" stroke-width="0.5"/>
+                                <line x1="80" y1="0" x2="80" y2="100" stroke="currentColor" stroke-width="0.5"/>
+                                <line x1="0" y1="20" x2="100" y2="20" stroke="currentColor" stroke-width="0.5"/>
+                                <line x1="0" y1="50" x2="100" y2="50" stroke="currentColor" stroke-width="0.5"/>
+                                <line x1="0" y1="80" x2="100" y2="80" stroke="currentColor" stroke-width="0.5"/>
+                            </g>
+                            <circle cx="30" cy="30" r="3" fill="currentColor"/>
+                            <circle cx="50" cy="50" r="5" fill="currentColor"/>
+                            <circle cx="70" cy="70" r="2" fill="currentColor"/>
+                            <circle cx="20" cy="60" r="2" fill="currentColor"/>
+                            <circle cx="80" cy="30" r="2" fill="currentColor"/>
+                        </svg>
+                        <h4>Carte Folium - Localisation</h4>
+                        <p>La carte interactive affichant la localisation de toutes les communes sera intégrée ici.</p>
+                        <p class="text-muted"><small>Placeholder - Carte 16</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 50 10 L 90 90 L 10 90 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="50" cy="60" r="3" fill="currentColor"/>
+                            <line x1="50" y1="70" x2="50" y2="85" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                        Zones Mal Desservies
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="placeholder-section">
+                        <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1.5rem; opacity: 0.6;">
+                            <path d="M 50 10 L 90 90 L 10 90 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="50" cy="60" r="3" fill="currentColor"/>
+                            <line x1="50" y1="70" x2="50" y2="85" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                        <h4>Carte Folium - Zones Mal Desservies</h4>
+                        <p>Les zones mal desservies seront mises en évidence avec des marqueurs ou cercles rouges.</p>
+                        <p class="text-muted"><small>Placeholder - Carte 17</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 50 50 A 5 5 0 0 1 55 50 A 8 8 0 0 1 55 42 A 13 13 0 0 1 68 42 A 21 21 0 0 1 68 21" 
+                                  fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                            <path d="M 50 50 A 5 5 0 0 0 45 50 A 8 8 0 0 0 45 58 A 13 13 0 0 0 32 58 A 21 21 0 0 0 32 79" 
+                                  fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                            <circle cx="50" cy="50" r="4" fill="currentColor"/>
+                        </svg>
+                        Indicateur Mobilité Verte
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="placeholder-section">
+                        <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1.5rem; opacity: 0.6;">
+                            <path d="M 50 50 A 5 5 0 0 1 55 50 A 8 8 0 0 1 55 42 A 13 13 0 0 1 68 42 A 21 21 0 0 1 68 21" 
+                                  fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                            <path d="M 50 50 A 5 5 0 0 0 45 50 A 8 8 0 0 0 45 58 A 13 13 0 0 0 32 58 A 21 21 0 0 0 32 79" 
+                                  fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                            <circle cx="50" cy="50" r="4" fill="currentColor"/>
+                        </svg>
+                        <h4>Carte Folium - Mobilité Verte</h4>
+                        <p>Les communes seront colorées selon un indicateur de "mobilité verte" (vélo + transports en commun).</p>
+                        <p class="text-muted"><small>Placeholder - Carte 18</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Graphiques -->
+<section id="graphiques" class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Graphiques et Analyses</h2>
+        <span class="text-muted" style="font-size: 0.875rem;">Analyses statistiques</span>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="10" y1="90" x2="90" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <line x1="10" y1="90" x2="10" y2="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <path d="M 15 85 Q 25 75, 35 70 T 55 55 T 75 40 T 85 25" 
+                                  fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="15" cy="85" r="2" fill="currentColor"/>
+                            <circle cx="35" cy="70" r="2.5" fill="currentColor"/>
+                            <circle cx="55" cy="55" r="3" fill="currentColor"/>
+                            <circle cx="75" cy="40" r="2.5" fill="currentColor"/>
+                            <circle cx="85" cy="25" r="2" fill="currentColor"/>
+                        </svg>
+                        Histogrammes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="placeholder-section">
+                        <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1.5rem; opacity: 0.6;">
+                            <line x1="10" y1="90" x2="90" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <line x1="10" y1="90" x2="10" y2="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <path d="M 15 85 Q 25 75, 35 70 T 55 55 T 75 40 T 85 25" 
+                                  fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="15" cy="85" r="2" fill="currentColor"/>
+                            <circle cx="35" cy="70" r="2.5" fill="currentColor"/>
+                            <circle cx="55" cy="55" r="3" fill="currentColor"/>
+                            <circle cx="75" cy="40" r="2.5" fill="currentColor"/>
+                            <circle cx="85" cy="25" r="2" fill="currentColor"/>
+                        </svg>
+                        <h5>Distribution des Indicateurs</h5>
+                        <p>Histogrammes montrant la distribution des temps de trajet, taux d'utilisation vélo et TC.</p>
+                        <p class="text-muted"><small>Placeholder - Carte 19</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="10" y1="90" x2="90" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <line x1="10" y1="90" x2="10" y2="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <rect x="20" y="70" width="8" height="20" fill="currentColor" opacity="0.8"/>
+                            <rect x="35" y="50" width="8" height="40" fill="currentColor" opacity="0.8"/>
+                            <rect x="50" y="30" width="8" height="60" fill="currentColor" opacity="0.8"/>
+                            <rect x="65" y="40" width="8" height="50" fill="currentColor" opacity="0.8"/>
+                        </svg>
+                        Bar Charts
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="placeholder-section">
+                        <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1.5rem; opacity: 0.6;">
+                            <line x1="10" y1="90" x2="90" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <line x1="10" y1="90" x2="10" y2="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <rect x="20" y="70" width="8" height="20" fill="currentColor" opacity="0.8"/>
+                            <rect x="35" y="50" width="8" height="40" fill="currentColor" opacity="0.8"/>
+                            <rect x="50" y="30" width="8" height="60" fill="currentColor" opacity="0.8"/>
+                            <rect x="65" y="40" width="8" height="50" fill="currentColor" opacity="0.8"/>
+                        </svg>
+                        <h5>Comparaisons par Zone</h5>
+                        <p>Bar charts comparant les indicateurs entre départements, types de transport et classes d'âge.</p>
+                        <p class="text-muted"><small>Placeholder - Carte 20</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="10" y1="10" x2="90" y2="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <line x1="10" y1="10" x2="10" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <path d="M 15 25 Q 25 35, 35 40 T 55 55 T 75 70 T 85 85" 
+                                  fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="15" cy="25" r="2" fill="currentColor"/>
+                            <circle cx="35" cy="40" r="2.5" fill="currentColor"/>
+                            <circle cx="55" cy="55" r="3" fill="currentColor"/>
+                            <circle cx="75" cy="70" r="2.5" fill="currentColor"/>
+                            <circle cx="85" cy="85" r="2" fill="currentColor"/>
+                        </svg>
+                        Courbes d'Évolution
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="placeholder-section">
+                        <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1.5rem; opacity: 0.6;">
+                            <line x1="10" y1="10" x2="90" y2="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <line x1="10" y1="10" x2="10" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <path d="M 15 25 Q 25 35, 35 40 T 55 55 T 75 70 T 85 85" 
+                                  fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="15" cy="25" r="2" fill="currentColor"/>
+                            <circle cx="35" cy="40" r="2.5" fill="currentColor"/>
+                            <circle cx="55" cy="55" r="3" fill="currentColor"/>
+                            <circle cx="75" cy="70" r="2.5" fill="currentColor"/>
+                            <circle cx="85" cy="85" r="2" fill="currentColor"/>
+                        </svg>
+                        <h5>Tendances Temporelles</h5>
+                        <p>Courbes d'évolution montrant les tendances des indicateurs dans le temps (si données disponibles).</p>
+                        <p class="text-muted"><small>Placeholder - Carte 21</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Comparaisons -->
+<section id="comparaisons" class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Comparaisons</h2>
+        <span class="text-muted" style="font-size: 0.875rem;">Par zone géographique</span>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <g opacity="0.2">
+                                <rect x="10" y="10" width="13" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                                <rect x="23" y="10" width="21" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                                <rect x="44" y="10" width="34" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                                <rect x="10" y="23" width="13" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                                <rect x="23" y="23" width="21" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                                <rect x="44" y="23" width="34" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                            </g>
+                            <circle cx="50" cy="50" r="5" fill="currentColor"/>
+                        </svg>
+                        Par Commune
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="placeholder-section">
+                        <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1.5rem; opacity: 0.6;">
+                            <g opacity="0.2">
+                                <rect x="10" y="10" width="13" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                                <rect x="23" y="10" width="21" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                                <rect x="44" y="10" width="34" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                                <rect x="10" y="23" width="13" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                                <rect x="23" y="23" width="21" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                                <rect x="44" y="23" width="34" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                            </g>
+                            <circle cx="50" cy="50" r="5" fill="currentColor"/>
+                        </svg>
+                        <h5>Indicateurs par Commune</h5>
+                        <p>Consultez les indicateurs détaillés pour une commune spécifique.</p>
+                    </div>
+                    <a href="{{ url_for('mobilite.communes') }}" class="btn btn-primary mt-3">Voir les communes →</a>
+                    <p class="text-muted mt-2"><small>Placeholder - Carte 24</small></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="30" r="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="50" cy="30" r="13" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="70" cy="30" r="5" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="30" cy="70" r="5" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="50" cy="70" r="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="70" cy="70" r="13" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="50" cy="50" r="3" fill="currentColor"/>
+                        </svg>
+                        Par Région
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="placeholder-section">
+                        <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1.5rem; opacity: 0.6;">
+                            <circle cx="30" cy="30" r="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="50" cy="30" r="13" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="70" cy="30" r="5" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="30" cy="70" r="5" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="50" cy="70" r="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="70" cy="70" r="13" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="50" cy="50" r="3" fill="currentColor"/>
+                        </svg>
+                        <h5>Indicateurs par Région</h5>
+                        <p>Visualisez les indicateurs agrégés par région avec comparaisons.</p>
+                    </div>
+                    <a href="{{ url_for('mobilite.regions') }}" class="btn btn-primary mt-3">Voir les régions →</a>
+                    <p class="text-muted mt-2"><small>Placeholder - Carte 25</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filtres -->
+<section id="filtres" class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Filtres et Recherche</h2>
+        <span class="text-muted" style="font-size: 0.875rem;">Personnalisez votre analyse</span>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0 d-flex align-items-center gap-2">
+                <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="40" cy="40" r="21" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M 40 40 A 5 5 0 0 1 45 40 A 8 8 0 0 1 45 32" 
+                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                    <line x1="55" y1="55" x2="65" y2="65" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+                Filtres de Recherche
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Zone Géographique</label>
+                    <select class="form-select">
+                        <option>Toutes les zones</option>
+                        <option>Par département</option>
+                        <option>Par région</option>
+                        <option>Par commune</option>
+                    </select>
+                    <p class="text-muted mt-2"><small>Placeholder - Carte 26</small></p>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Type de Transport</label>
+                    <select class="form-select">
+                        <option>Tous les types</option>
+                        <option>Train</option>
+                        <option>Bus</option>
+                        <option>Vélo</option>
+                        <option>Voiture</option>
+                    </select>
+                    <p class="text-muted mt-2"><small>Placeholder - Carte 27</small></p>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Tranche d'Âge</label>
+                    <select class="form-select">
+                        <option>Toutes les tranches</option>
+                        <option>0-18 ans</option>
+                        <option>19-35 ans</option>
+                        <option>36-50 ans</option>
+                        <option>51-65 ans</option>
+                        <option>65+ ans</option>
+                    </select>
+                    <p class="text-muted mt-2"><small>Placeholder - Carte 28</small></p>
+                </div>
+            </div>
+            <button class="btn btn-primary mt-3">Appliquer les filtres</button>
+        </div>
+    </div>
+</section>
+
+<!-- Exports -->
+<section id="exports" class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Exports</h2>
+        <span class="text-muted" style="font-size: 0.875rem;">Téléchargez vos données</span>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="10" width="80" height="80" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <line x1="10" y1="30" x2="90" y2="30" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="10" y1="70" x2="90" y2="70" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="30" y1="10" x2="30" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="70" y1="10" x2="70" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                        </svg>
+                        Export CSV
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>Exportez les données filtrées au format CSV pour analyse externe.</p>
+                    <button class="btn btn-outline-primary">Télécharger CSV</button>
+                    <p class="text-muted mt-2"><small>Placeholder - Carte 30</small></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="15" y="10" width="70" height="89" fill="none" stroke="currentColor" stroke-width="2.5" rx="2"/>
+                            <line x1="25" y1="25" x2="75" y2="25" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                            <line x1="25" y1="35" x2="75" y2="35" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                            <line x1="25" y1="45" x2="60" y2="45" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                            <line x1="25" y1="55" x2="75" y2="55" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                            <line x1="25" y1="65" x2="70" y2="65" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                            <path d="M 15 10 A 5 5 0 0 1 20 10" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+                        </svg>
+                        Export PDF
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>Générez un rapport PDF personnalisé avec indicateurs et graphiques.</p>
+                    <button class="btn btn-outline-primary">Générer PDF</button>
+                    <p class="text-muted mt-2"><small>Placeholder - Carte 31-32</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

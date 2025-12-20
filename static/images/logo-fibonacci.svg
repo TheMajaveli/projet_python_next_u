@@ -1,0 +1,56 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Suite de Fibonacci : 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 -->
+  <!-- Cercles basés sur les proportions de Fibonacci -->
+  
+  <!-- Cercle 1 (rayon 1) -->
+  <circle cx="60" cy="60" r="1" fill="currentColor" opacity="0.8"/>
+  
+  <!-- Cercle 2 (rayon 1) -->
+  <circle cx="60" cy="60" r="1" fill="currentColor" opacity="0.7"/>
+  
+  <!-- Cercle 3 (rayon 2) -->
+  <circle cx="60" cy="60" r="2" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.6"/>
+  
+  <!-- Cercle 4 (rayon 3) -->
+  <circle cx="60" cy="60" r="3" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+  
+  <!-- Cercle 5 (rayon 5) -->
+  <circle cx="60" cy="60" r="5" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.4"/>
+  
+  <!-- Cercle 6 (rayon 8) -->
+  <circle cx="60" cy="60" r="8" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.3"/>
+  
+  <!-- Cercle 7 (rayon 13) -->
+  <circle cx="60" cy="60" r="13" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.25"/>
+  
+  <!-- Cercle 8 (rayon 21) -->
+  <circle cx="60" cy="60" r="21" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+  
+  <!-- Cercle 9 (rayon 34) -->
+  <circle cx="60" cy="60" r="34" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.15"/>
+  
+  <!-- Cercle 10 (rayon 55) -->
+  <circle cx="60" cy="60" r="55" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.1"/>
+  
+  <!-- Spirale de Fibonacci (approximation avec arcs) -->
+  <path d="M 60 60 
+           A 1 1 0 0 1 61 60
+           A 1 1 0 0 1 61 59
+           A 2 2 0 0 1 59 59
+           A 3 3 0 0 1 59 63
+           A 5 5 0 0 1 65 63
+           A 8 8 0 0 1 65 55
+           A 13 13 0 0 1 73 55
+           A 21 21 0 0 1 73 34
+           A 34 34 0 0 1 94 34
+           A 55 55 0 0 1 94 -5" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="1.5" 
+        opacity="0.6"
+        stroke-linecap="round"/>
+  
+  <!-- Point central -->
+  <circle cx="60" cy="60" r="2" fill="currentColor"/>
+</svg>
+

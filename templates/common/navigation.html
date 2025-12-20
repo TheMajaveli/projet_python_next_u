@@ -1,0 +1,82 @@
+<!-- Navigation principale -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand logo-container" href="{{ url_for('main.index') }}">
+            <svg class="logo-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <!-- Suite de Fibonacci : Cercles concentriques -->
+                <circle class="logo-circle-1" cx="60" cy="60" r="1" fill="currentColor" opacity="0.8"/>
+                <circle class="logo-circle-2" cx="60" cy="60" r="2" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.6"/>
+                <circle class="logo-circle-3" cx="60" cy="60" r="3" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+                <circle class="logo-circle-4" cx="60" cy="60" r="5" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.4"/>
+                <circle class="logo-circle-5" cx="60" cy="60" r="8" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.3"/>
+                <circle class="logo-circle-6" cx="60" cy="60" r="13" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.25"/>
+                <circle class="logo-circle-7" cx="60" cy="60" r="21" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+                <circle class="logo-circle-8" cx="60" cy="60" r="34" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.15"/>
+                <circle class="logo-circle-9" cx="60" cy="60" r="55" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.1"/>
+                
+                <!-- Spirale de Fibonacci -->
+                <path class="logo-spiral" d="M 60 60 
+                         A 1 1 0 0 1 61 60
+                         A 1 1 0 0 1 61 59
+                         A 2 2 0 0 1 59 59
+                         A 3 3 0 0 1 59 63
+                         A 5 5 0 0 1 65 63
+                         A 8 8 0 0 1 65 55
+                         A 13 13 0 0 1 73 55
+                         A 21 21 0 0 1 73 34
+                         A 34 34 0 0 1 94 34
+                         A 55 55 0 0 1 94 -5" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      stroke-width="1.5" 
+                      opacity="0.6"
+                      stroke-linecap="round"/>
+                
+                <!-- Point central -->
+                <circle class="logo-center" cx="60" cy="60" r="2" fill="currentColor"/>
+            </svg>
+            <span class="logo-text">Dashboard</span>
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                style="border: 1px solid var(--border-color); border-radius: var(--radius);">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.index') }}">Accueil</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Mobilité
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ url_for('main.index') }}#indicateurs">Indicateurs</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.index') }}#cartes">Cartes</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.index') }}#graphiques">Graphiques</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('mobilite.communes') }}">Par Commune</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('mobilite.regions') }}">Par Région</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.index') }}#comparaisons">Comparaisons</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.index') }}#exports">Exports</a>
+                </li>
+            </ul>
+            
+            <div class="d-flex align-items-center gap-2">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Changer de thème">
+                    <span id="theme-icon">🌙</span>
+                    <span id="theme-text">Mode sombre</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+

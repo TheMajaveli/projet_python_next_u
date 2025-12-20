@@ -1,0 +1,98 @@
+/* Icônes Fibonacci - Design Mathématique */
+
+.fib-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    color: currentColor;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.fib-icon-large {
+    width: 64px;
+    height: 64px;
+    display: block;
+    margin: 0 auto 1.5rem;
+    opacity: 0.6;
+    filter: grayscale(100%);
+    transition: all 0.3s ease;
+}
+
+.placeholder-section:hover .fib-icon-large {
+    opacity: 0.8;
+    filter: grayscale(50%);
+}
+
+.fib-icon-medium {
+    width: 32px;
+    height: 32px;
+}
+
+/* Icône Dashboard/Graphique */
+.fib-icon-dashboard {
+    /* Spirale Fibonacci avec grille */
+}
+
+/* Icône Carte/Localisation */
+.fib-icon-map {
+    /* Points Fibonacci sur grille */
+}
+
+/* Icône Alerte/Avertissement */
+.fib-icon-alert {
+    /* Triangle Fibonacci */
+}
+
+/* Icône Mobilité Verte */
+.fib-icon-green {
+    /* Spirale Fibonacci verte */
+}
+
+/* Icône Graphique Croissant */
+.fib-icon-chart-up {
+    /* Courbe Fibonacci ascendante */
+}
+
+/* Icône Graphique Descendant */
+.fib-icon-chart-down {
+    /* Courbe Fibonacci descendante */
+}
+
+/* Icône Commune */
+.fib-icon-commune {
+    /* Grille Fibonacci */
+}
+
+/* Icône Région */
+.fib-icon-region {
+    /* Cercles Fibonacci multiples */
+}
+
+/* Icône Recherche/Filtre */
+.fib-icon-search {
+    /* Spirale Fibonacci avec point central */
+}
+
+/* Icône Export CSV */
+.fib-icon-csv {
+    /* Grille Fibonacci avec lignes */
+}
+
+/* Icône Export PDF */
+.fib-icon-pdf {
+    /* Rectangle Fibonacci */
+}
+
+/* Adaptation thème clair */
+[data-theme="light"] .fib-icon {
+    opacity: 0.9;
+}
+
+/* Adaptation thème sombre */
+[data-theme="dark"] .fib-icon {
+    opacity: 1;
+    filter: brightness(1.1);
+}
+
