@@ -89,6 +89,34 @@ projet_python_next_u/
 - **Visualisations** : Folium (cartes), Matplotlib, Seaborn (graphiques)
 - **Frontend** : HTML5 + Bootstrap + Jinja2
 
+## 📸 Captures d'écran de l'application
+
+Cette section présente les différentes vues de l'application web pour aider les développeurs à comprendre l'interface utilisateur et les fonctionnalités disponibles.
+
+### Vue 1 : Page d'accueil
+![Page d'accueil](screenshot-accueil.png)
+*Vue d'ensemble de la page d'accueil du tableau de bord, présentant la navigation principale et l'interface utilisateur.*
+
+### Vue 2 : Navigation et menu
+![Navigation](screenshot-navigation.png)
+*Interface de navigation montrant les différents menus et options disponibles pour accéder aux fonctionnalités de l'application.*
+
+### Vue 3 : Visualisation des données
+![Visualisation](screenshot-visualisation-donnees.png)
+*Affichage des données de mobilité avec graphiques et indicateurs pour l'analyse comparative des zones géographiques.*
+
+### Vue 4 : Carte interactive
+![Carte interactive](screenshot-carte-interactive.png)
+*Carte interactive générée avec Folium montrant la répartition géographique des données de mobilité en France.*
+
+### Vue 5 : Détails des communes
+![Détails communes](screenshot-details-communes.png)
+*Vue détaillée des informations par commune, permettant l'analyse fine des inégalités de mobilité à l'échelle locale.*
+
+### Vue 6 : Analyse régionale
+![Analyse régionale](screenshot-analyse-regionale.png)
+*Vue d'analyse régionale avec comparaison des indicateurs de mobilité entre différentes régions françaises.*
+
 ## 👥 Équipe
 
 - **Dev 1** : Junior

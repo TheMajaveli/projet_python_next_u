@@ -91,3 +91,7 @@ UI_MODERNIZATION.md
 
 TEMPLATE_STRUCTURE.md
 LOGO_FIBONACCI.md
+
+data/RP2021_mobpro/FD_MOBPRO_2021.csv
+static/map_communes.html
+data/LocalisationCommune.parquet
