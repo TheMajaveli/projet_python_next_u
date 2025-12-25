@@ -11,46 +11,539 @@
     </div>
 </div>
 
-<!-- Placeholder pour la page commune -->
-<div class="row">
+{% if error %}
+<div class="alert alert-warning" role="alert">
+    {{ error }}
+</div>
+{% endif %}
+
+<!-- Filtres -->
+<div class="row mb-4">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 d-flex align-items-center gap-2">
-                    <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <g opacity="0.2">
-                            <rect x="10" y="10" width="13" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                            <rect x="23" y="10" width="21" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                            <rect x="44" y="10" width="34" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                            <rect x="10" y="23" width="13" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                            <rect x="23" y="23" width="21" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                            <rect x="44" y="23" width="34" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                        </g>
-                        <circle cx="50" cy="50" r="5" fill="currentColor"/>
-                    </svg>
-                    Recherche de Commune
-                </h5>
+                <h5 class="mb-0">Filtres</h5>
             </div>
             <div class="card-body">
-                <div class="placeholder-section">
-                    <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1.5rem; opacity: 0.6;">
-                        <g opacity="0.2">
-                            <rect x="10" y="10" width="13" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                            <rect x="23" y="10" width="21" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                            <rect x="44" y="10" width="34" height="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                            <rect x="10" y="23" width="13" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                            <rect x="23" y="23" width="21" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                            <rect x="44" y="23" width="34" height="21" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                        </g>
-                        <circle cx="50" cy="50" r="5" fill="currentColor"/>
-                    </svg>
-                    <h4>Page Commune - En Développement</h4>
-                    <p>Cette page affichera les indicateurs détaillés pour une commune sélectionnée.</p>
-                    <p class="text-muted"><small>Placeholder - Carte 24</small></p>
+                <form id="filterForm" method="GET" action="{{ url_for('mobilite.communes') }}" onsubmit="return true;">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label">Région</label>
+                            <select class="form-select" name="region" id="regionFilter">
+                                <option value="">Toutes les régions</option>
+                                {% for region in regions_list %}
+                                <option value="{{ region.get('REG', '') }}" {% if region_filter == region.get('REG', '') %}selected{% endif %}>
+                                    {{ region.get('Région', region.get('REGION', '')) }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Département</label>
+                            <select class="form-select" name="department" id="departmentFilter" {% if not region_filter %}disabled{% endif %}>
+                                <option value="">{% if region_filter %}Tous les départements{% else %}Sélectionnez d'abord une région{% endif %}</option>
+                                {% for dept in departments_list %}
+                                <option value="{{ dept.get('DEP', '') }}" {% if department_filter == dept.get('DEP', '') %}selected{% endif %}>
+                                    {{ dept.get('DEP', '') }} - {{ dept.get('Nom', '') }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Tranche d'Âge</label>
+                            <select class="form-select" name="age" id="ageFilter">
+                                <option value="" {% if not age_filter %}selected{% endif %}>Toutes les tranches</option>
+                                {% if age_ranges_list %}
+                                    {% for age_range in age_ranges_list %}
+                                    <option value="{{ age_range.get('code', '') }}" {% if age_filter == age_range.get('code', '') %}selected{% endif %}>
+                                        {{ age_range.get('name', '') }}
+                                    </option>
+                                    {% endfor %}
+                                {% else %}
+                                    {# Fallback si age_ranges_list n'est pas disponible #}
+                                    <option value="0-18" {% if age_filter == '0-18' %}selected{% endif %}>0-18 ans</option>
+                                    <option value="19-35" {% if age_filter == '19-35' %}selected{% endif %}>19-35 ans</option>
+                                    <option value="36-50" {% if age_filter == '36-50' %}selected{% endif %}>36-50 ans</option>
+                                    <option value="51-65" {% if age_filter == '51-65' %}selected{% endif %}>51-65 ans</option>
+                                    <option value="65+" {% if age_filter == '65+' %}selected{% endif %}>65+ ans</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="col-md-4 d-flex gap-2 align-items-end">
+                            <button type="submit" class="btn btn-primary">Appliquer les filtres</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetFilters()">Réinitialiser</button>
+                        </div>
+                    </div>
+                    <input type="hidden" name="page" value="1">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Liste des communes -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Liste des Communes</h5>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; display: inline-block; margin-right: 4px;">
+                            <rect x="10" y="10" width="80" height="80" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <line x1="10" y1="30" x2="90" y2="30" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="10" y1="70" x2="90" y2="70" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="30" y1="10" x2="30" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="70" y1="10" x2="70" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                        </svg>
+                        Exporter
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="exportDropdown">
+                        <li><a class="dropdown-item" href="#" id="exportCsvLink" onclick="exportData('csv'); return false;">
+                            <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;">
+                                <rect x="10" y="10" width="80" height="80" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <line x1="10" y1="30" x2="90" y2="30" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                                <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                                <line x1="10" y1="70" x2="90" y2="70" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                                <line x1="30" y1="10" x2="30" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                                <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                                <line x1="70" y1="10" x2="70" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            </svg>
+                            Exporter en CSV
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" id="exportPdfLink" onclick="exportData('pdf'); return false;">
+                            <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;">
+                                <rect x="15" y="10" width="70" height="89" fill="none" stroke="currentColor" stroke-width="2.5" rx="2"/>
+                                <line x1="25" y1="25" x2="75" y2="25" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                                <line x1="25" y1="35" x2="75" y2="35" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                                <line x1="25" y1="45" x2="60" y2="45" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                                <line x1="25" y1="55" x2="75" y2="55" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                                <line x1="25" y1="65" x2="70" y2="65" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                            </svg>
+                            Exporter en PDF
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Loader -->
+                <div id="loadingIndicator" class="text-center py-5" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Chargement des données...</p>
+                </div>
+                
+                <!-- Table -->
+                <div id="communesTableContainer">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead id="communesTableHead">
+                                <tr>
+                                    <th>Commune</th>
+                                    <th>Population</th>
+                                    <th>Mobilité Verte</th>
+                                    <th>Temps Trajet</th>
+                                    <th>% Vélo</th>
+                                    <th>% Voiture</th>
+                                    <th>% TC</th>
+                                    <th>% Marche</th>
+                                    <th>% Deux-roues</th>
+                                    <th>% Sans transport</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="communesTableBody">
+                                <!-- Les données seront chargées via AJAX -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <nav id="paginationContainer" aria-label="Pagination des communes" style="display: none;">
+                        <ul class="pagination justify-content-center mt-3" id="paginationList">
+                        </ul>
+                        <p class="text-center text-muted small" id="paginationInfo"></p>
+                    </nav>
+                </div>
+                
+                <!-- Message vide -->
+                <div id="emptyMessage" class="text-center py-5" style="display: none;">
+                    <p class="text-muted">Aucune donnée disponible</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal pour les détails de la commune -->
+<div class="modal fade" id="communeDetailModal" tabindex="-1" aria-labelledby="communeDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="communeDetailModalLabel">Détails</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="communeDetailContent">
+                <div class="text-center py-3">Chargement...</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script pour chargement asynchrone -->
+<script>
+let currentPage = 1;
+const perPage = 10;
+
+function getFilters() {
+    return {
+        region: document.getElementById('regionFilter').value,
+        department: document.getElementById('departmentFilter').value,
+        age: document.getElementById('ageFilter').value
+    };
+}
+
+function buildApiUrl(page) {
+    const filters = getFilters();
+    const params = new URLSearchParams({
+        page: page,
+        per_page: perPage,
+        ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
+    });
+    return `{{ url_for('mobilite.api_communes') }}?${params.toString()}`;
+}
+
+function loadCommunes(page = 1) {
+    currentPage = page;
+    const tableBody = document.getElementById('communesTableBody');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const tableContainer = document.getElementById('communesTableContainer');
+    const emptyMessage = document.getElementById('emptyMessage');
+    const paginationContainer = document.getElementById('paginationContainer');
+    
+    // Afficher le loader
+    loadingIndicator.style.display = 'block';
+    tableContainer.style.display = 'none';
+    emptyMessage.style.display = 'none';
+    paginationContainer.style.display = 'none';
+    
+    // Charger les données
+    fetch(buildApiUrl(page))
+        .then(response => response.json())
+        .then(data => {
+            loadingIndicator.style.display = 'none';
+            
+            if (data.error) {
+                emptyMessage.innerHTML = `<p class="text-danger">Erreur: ${data.error}</p>`;
+                emptyMessage.style.display = 'block';
+                return;
+            }
+            
+            if (!data.communes || data.communes.length === 0) {
+                emptyMessage.style.display = 'block';
+                return;
+            }
+            
+            
+            // Remplir le tableau
+            tableBody.innerHTML = '';
+            data.communes.forEach((commune, index) => {
+                const row = document.createElement('tr');
+                row.style.opacity = '0';
+                row.style.transition = 'opacity 0.3s ease-in';
+                
+                const communeCode = commune.COM || commune.CODCOM || '';
+                
+                // Construire les cellules avec toutes les colonnes de transport
+                let cells = `
+                    <td><strong>${commune.LIBGEO || 'N/A'}</strong></td>
+                    <td>${commune.PTOT ? new Intl.NumberFormat('fr-FR').format(commune.PTOT) : 'N/A'}</td>
+                    <td>${(commune.green_mobility_index || 0).toFixed(1)}</td>
+                    <td>${(commune.avg_commute_time || 0).toFixed(1)} min</td>
+                    <td>${(commune.velo_percentage || 0).toFixed(1)}%</td>
+                    <td>${(commune.voiture_percentage || 0).toFixed(1)}%</td>
+                    <td>${(commune.transport_commun_percentage || 0).toFixed(1)}%</td>
+                    <td>${(commune.marche_percentage || 0).toFixed(1)}%</td>
+                    <td>${(commune.deux_roues_percentage || 0).toFixed(1)}%</td>
+                    <td>${(commune.pas_transport_percentage || 0).toFixed(1)}%</td>
+                    <td>
+                        ${communeCode ? 
+                            `<button class="btn btn-sm btn-primary" onclick="openCommuneDetail('${communeCode}')">Détails</button>` : 
+                            '<span class="text-muted">N/A</span>'}
+                    </td>
+                `;
+                
+                row.innerHTML = cells;
+                tableBody.appendChild(row);
+                
+                // Animation progressive
+                setTimeout(() => {
+                    row.style.opacity = '1';
+                }, index * 30);
+            });
+            
+            tableContainer.style.display = 'block';
+            
+            // Pagination
+            if (data.total_pages > 1) {
+                renderPagination(data);
+                paginationContainer.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            loadingIndicator.style.display = 'none';
+            emptyMessage.innerHTML = `<p class="text-danger">Erreur lors du chargement: ${error.message}</p>`;
+            emptyMessage.style.display = 'block';
+            console.error('Erreur:', error);
+        });
+}
+
+function renderPagination(data) {
+    const paginationList = document.getElementById('paginationList');
+    const paginationInfo = document.getElementById('paginationInfo');
+    
+    paginationList.innerHTML = '';
+    
+    // Bouton Précédent
+    const prevLi = document.createElement('li');
+    prevLi.className = data.page > 1 ? 'page-item' : 'page-item disabled';
+    prevLi.innerHTML = data.page > 1 ? 
+        `<a class="page-link" href="#" onclick="loadCommunes(${data.page - 1}); return false;">Précédent</a>` :
+        '<span class="page-link">Précédent</span>';
+    paginationList.appendChild(prevLi);
+    
+    // Numéros de page
+    for (let p = 1; p <= data.total_pages; p++) {
+        if (p === 1 || p === data.total_pages || (p >= data.page - 2 && p <= data.page + 2)) {
+            const li = document.createElement('li');
+            li.className = p === data.page ? 'page-item active' : 'page-item';
+            li.innerHTML = p === data.page ?
+                `<span class="page-link">${p}</span>` :
+                `<a class="page-link" href="#" onclick="loadCommunes(${p}); return false;">${p}</a>`;
+            paginationList.appendChild(li);
+        } else if (p === data.page - 3 || p === data.page + 3) {
+            const li = document.createElement('li');
+            li.className = 'page-item disabled';
+            li.innerHTML = '<span class="page-link">...</span>';
+            paginationList.appendChild(li);
+        }
+    }
+    
+    // Bouton Suivant
+    const nextLi = document.createElement('li');
+    nextLi.className = data.page < data.total_pages ? 'page-item' : 'page-item disabled';
+    nextLi.innerHTML = data.page < data.total_pages ?
+        `<a class="page-link" href="#" onclick="loadCommunes(${data.page + 1}); return false;">Suivant</a>` :
+        '<span class="page-link">Suivant</span>';
+    paginationList.appendChild(nextLi);
+    
+    // Info
+    const start = ((data.page - 1) * data.per_page) + 1;
+    const end = Math.min(data.page * data.per_page, data.total_count);
+    paginationInfo.textContent = `Affichage de ${start} à ${end} sur ${data.total_count} communes`;
+}
+
+function resetFilters() {
+    document.getElementById('regionFilter').value = '';
+    document.getElementById('departmentFilter').value = '';
+    document.getElementById('transportFilter').value = '';
+    document.getElementById('ageFilter').value = '';
+    
+    // Réinitialiser le dropdown des départements
+    loadDepartmentsByRegion('');
+    
+    loadCommunes(1);
+}
+
+// Charger les départements selon la région sélectionnée
+function loadDepartmentsByRegion(regionCode) {
+    const departmentFilter = document.getElementById('departmentFilter');
+    
+    if (!regionCode) {
+        // Désactiver et vider le dropdown si aucune région
+        departmentFilter.disabled = true;
+        departmentFilter.innerHTML = '<option value="">Sélectionnez d\'abord une région</option>';
+        // Réinitialiser la sélection de département
+        departmentFilter.value = '';
+        return;
+    }
+    
+    // Activer le dropdown et afficher un loader
+    departmentFilter.disabled = true;
+    departmentFilter.innerHTML = '<option value="">Chargement...</option>';
+    
+    // Charger les départements via API
+    fetch(`{{ url_for('mobilite.api_departments') }}?region=${regionCode}`)
+        .then(response => response.json())
+        .then(data => {
+            departmentFilter.innerHTML = '<option value="">Tous les départements</option>';
+            
+            if (data.departments && data.departments.length > 0) {
+                data.departments.forEach(dept => {
+                    const option = document.createElement('option');
+                    option.value = dept.DEP;
+                    option.textContent = `${dept.DEP} - ${dept.Nom}`;
+                    departmentFilter.appendChild(option);
+                });
+            }
+            
+            departmentFilter.disabled = false;
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des départements:', error);
+            departmentFilter.innerHTML = '<option value="">Erreur de chargement</option>';
+            departmentFilter.disabled = false;
+        });
+}
+
+// Fonction pour exporter les données avec les filtres actuels
+function exportData(format) {
+    const filters = getFilters();
+    const params = new URLSearchParams({
+        ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
+    });
+    
+    const baseUrl = format === 'csv' 
+        ? '{{ url_for("export.export_csv_communes") }}'
+        : '{{ url_for("export.export_pdf_communes") }}';
+    
+    const url = params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+    window.location.href = url;
+}
+
+// Charger les données au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    // Écouter les changements de région SEULEMENT pour charger les départements (pas de rechargement automatique)
+    const regionFilter = document.getElementById('regionFilter');
+    regionFilter.addEventListener('change', function() {
+        const regionCode = this.value;
+        loadDepartmentsByRegion(regionCode);
+        
+        // Réinitialiser le département mais NE PAS recharger les communes automatiquement
+        document.getElementById('departmentFilter').value = '';
+    });
+    
+    // Si une région est déjà sélectionnée, charger ses départements
+    if (regionFilter.value) {
+        loadDepartmentsByRegion(regionFilter.value);
+    }
+    
+    // Charger les données initiales seulement si des filtres sont déjà dans l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('region') || urlParams.has('department') || urlParams.has('transport') || urlParams.has('age')) {
+        loadCommunes(1);
+    } else {
+        // Sinon, charger la première page sans filtres
+        loadCommunes(1);
+    }
+});
+
+// Fonction pour ouvrir la modale de détails d'une commune
+function openCommuneDetail(communeCode) {
+    const modal = new bootstrap.Modal(document.getElementById('communeDetailModal'));
+    const modalContent = document.getElementById('communeDetailContent');
+    const modalTitle = document.getElementById('communeDetailModalLabel');
+    
+    // Afficher le loader simple
+    modalContent.innerHTML = '<div class="text-center py-3">Chargement...</div>';
+    
+    // Ouvrir la modale
+    modal.show();
+    
+    // Récupérer les filtres actuels
+    const filters = getFilters();
+    const params = new URLSearchParams({
+        ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
+    });
+    
+    // Construire l'URL de l'API (base URL + code commune)
+    const baseApiUrl = `{{ url_for('mobilite.api_communes') }}`;
+    const apiUrl = baseApiUrl.replace('/api/communes', `/api/communes/${communeCode}`);
+    
+    // Charger les données de la commune
+    fetch(`${apiUrl}?${params.toString()}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                modalContent.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Erreur:</strong> ${data.error}
+                    </div>
+                `;
+                return;
+            }
+            
+            const commune = data.commune;
+            
+            // Construire le contenu de la modale - version simple
+            modalTitle.textContent = commune.LIBGEO || 'Détails de la Commune';
+            
+            modalContent.innerHTML = `
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <th style="width: 35%;">Commune</th>
+                            <td><strong>${commune.LIBGEO || 'N/A'}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Code</th>
+                            <td>${commune.COM || commune.CODCOM || 'N/A'}</td>
+                        </tr>
+                        <tr>
+                            <th>Population</th>
+                            <td>${commune.PTOT ? new Intl.NumberFormat('fr-FR').format(commune.PTOT) : 'N/A'}</td>
+                        </tr>
+                        <tr>
+                            <th>Mobilité Verte</th>
+                            <td>${(commune.green_mobility_index || 0).toFixed(1)}%</td>
+                        </tr>
+                        <tr>
+                            <th>Temps Trajet Moyen</th>
+                            <td>${(commune.avg_commute_time || 0).toFixed(1)} min</td>
+                        </tr>
+                        <tr>
+                            <th>Vélo</th>
+                            <td>${(commune.velo_percentage || 0).toFixed(1)}%</td>
+                        </tr>
+                        <tr>
+                            <th>Voiture</th>
+                            <td>${(commune.voiture_percentage || 0).toFixed(1)}%</td>
+                        </tr>
+                        <tr>
+                            <th>Transport en Commun</th>
+                            <td>${(commune.transport_commun_percentage || 0).toFixed(1)}%</td>
+                        </tr>
+                        <tr>
+                            <th>Marche</th>
+                            <td>${(commune.marche_percentage || 0).toFixed(1)}%</td>
+                        </tr>
+                        <tr>
+                            <th>Deux-roues</th>
+                            <td>${(commune.deux_roues_percentage || 0).toFixed(1)}%</td>
+                        </tr>
+                        <tr>
+                            <th>Sans Transport</th>
+                            <td>${(commune.pas_transport_percentage || 0).toFixed(1)}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        })
+        .catch(error => {
+            modalContent.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    <strong>Erreur:</strong> ${error.message}
+                </div>
+            `;
+            console.error('Erreur lors du chargement des détails:', error);
+        });
+}
+</script>
 {% endblock %}
 

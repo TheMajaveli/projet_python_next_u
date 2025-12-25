@@ -26263,5 +26263,52 @@
                 {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "green", "fillOpacity": 0.5, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
             ).addTo(map_5923c6deb6a8f316f1b9ebf65bfdf48d);
         
+            // Ajouter des tooltips à tous les marqueurs
+            (function() {
+                var map = map_5923c6deb6a8f316f1b9ebf65bfdf48d;
+                var markers = [];
+                
+                // Collecter tous les marqueurs de la carte
+                map.eachLayer(function(layer) {
+                    if (layer instanceof L.CircleMarker) {
+                        markers.push(layer);
+                    }
+                });
+                
+                // Ajouter des tooltips basés sur la couleur et les coordonnées
+                markers.forEach(function(marker) {
+                    var lat = marker.getLatLng().lat;
+                    var lng = marker.getLatLng().lng;
+                    var color = marker.options.color || 'blue';
+                    
+                    // Déterminer le type de zone selon la couleur
+                    var zoneType = '';
+                    if (color === 'red') {
+                        zoneType = 'Zone mal desservie';
+                    } else if (color === 'green') {
+                        zoneType = 'Zone bien desservie';
+                    } else {
+                        zoneType = 'Commune';
+                    }
+                    
+                    // Créer le texte du tooltip
+                    var tooltipText = '<b>' + zoneType + '</b><br>Lat: ' + lat.toFixed(4) + '<br>Lng: ' + lng.toFixed(4);
+                    
+                    // Ajouter le tooltip
+                    marker.bindTooltip(tooltipText, {
+                        permanent: false,
+                        direction: 'top',
+                        offset: [0, -10]
+                    });
+                    
+                    // Ajouter aussi un popup au clic
+                    var popupText = '<div style="min-width: 150px;"><b>' + zoneType + '</b><br>' +
+                        'Coordonnées:<br>Latitude: ' + lat.toFixed(6) + '<br>Longitude: ' + lng.toFixed(6) + '</div>';
+                    marker.bindPopup(popupText);
+                });
+                
+                console.log('Tooltips ajoutés à ' + markers.length + ' marqueurs');
+            })();
+        
 </script>
 </html>
