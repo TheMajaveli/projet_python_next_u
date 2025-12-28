@@ -2,196 +2,444 @@
 
 ## 📋 Description du Projet
 
-Application web (dashboard) permettant à une collectivité de :
-- Comparer les conditions de mobilité entre communes / zones (urbaines vs rurales)
-- Identifier les zones mal desservies
-- Produire des indicateurs pour appuyer des décisions (infrastructures, communication interne, open data)
+Cette application web est un **tableau de bord interactif** permettant d'analyser les inégalités de mobilité entre les communes françaises. Elle permet aux collectivités et aux chercheurs de :
 
-## 🚀 Installation
+- **Comparer les conditions de mobilité** entre communes (urbaines vs rurales)
+- **Identifier les zones mal desservies** en transport
+- **Analyser les modes de transport** utilisés par tranche d'âge
+- **Produire des indicateurs** pour appuyer des décisions (infrastructures, communication, open data)
+- **Exporter les données** filtrées en CSV ou PDF
+
+---
+
+## 🎯 Comment l'Application Fonctionne
+
+### Architecture Générale
+
+L'application suit une architecture **Flask** classique avec séparation des responsabilités :
+
+```
+┌─────────────────┐
+│   Utilisateur   │
+│   (Navigateur)  │
+└────────┬────────┘
+         │ Requêtes HTTP
+         ▼
+┌─────────────────┐
+│   Flask App     │  ← app.py (point d'entrée)
+│   (Routes)      │
+└────────┬────────┘
+         │
+    ┌────┴────┬──────────────┬──────────────┐
+    ▼         ▼              ▼              ▼
+┌────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
+│ Pages  │ │  API     │ │ Export   │ │  Maps    │
+│ HTML   │ │  JSON    │ │ CSV/PDF  │ │  Charts  │
+└────────┘ └──────────┘ └──────────┘ └──────────┘
+    │         │              │              │
+    └─────────┴──────────────┴──────────────┘
+                    │
+                    ▼
+         ┌──────────────────┐
+         │  Data Loader     │  ← Charge les CSV
+         │  (avec Cache)    │
+         └─────────┬────────┘
+                   │
+                   ▼
+         ┌──────────────────┐
+         │  Fichiers CSV    │
+         │  - Communes      │
+         │  - Mobilité      │
+         │  - Régions       │
+         └──────────────────┘
+```
+
+### Flux de Données
+
+1. **Chargement Initial** :
+   - L'application charge les données depuis les fichiers CSV dans `data/`
+   - Un système de **cache en mémoire** évite de recharger les fichiers à chaque requête
+   - Le cache se met à jour automatiquement si les fichiers CSV sont modifiés
+
+2. **Traitement des Données** :
+   - Les données de mobilité (`Commune_1001-13101_2.csv`) contiennent ~670 000 lignes
+   - Chaque ligne représente un individu avec son mode de transport, sa tranche d'âge, sa commune
+   - L'application **groupe par commune** et calcule des pourcentages pour chaque type de transport
+
+3. **Calcul des Indicateurs** :
+   - **Pourcentages par type de transport** : vélo, voiture, transports en commun, marche, etc.
+   - **Indice de mobilité verte** : combinaison du taux de vélo et de transports en commun
+   - **Temps de trajet moyen** : estimation basée sur le type de transport utilisé
+   - **Filtrage par tranche d'âge** : permet d'analyser les comportements par génération
+
+4. **Affichage dans l'Interface** :
+   - Les données sont envoyées au navigateur via des **API JSON** (pas de rechargement complet de page)
+   - Le frontend utilise **JavaScript** pour charger dynamiquement les tableaux
+   - Les filtres (région, département, âge) sont appliqués côté serveur avant l'envoi
+
+---
+
+## 🚀 Installation et Démarrage
 
 ### Prérequis
-- Python 3.8 ou supérieur
-- pip (gestionnaire de packages Python)
 
-### Étapes d'installation
+- **Python 3.8 ou supérieur** (testé avec Python 3.11)
+- **pip** (gestionnaire de packages Python)
+- **Git** (pour cloner le dépôt)
 
-1. **Cloner le dépôt** (si applicable)
-   ```bash
-   git clone <url-du-depot>
-   cd projet_python_next_u
-   ```
+### Étapes d'Installation
 
-2. **Créer l'environnement virtuel**
-   ```bash
-   python3 -m venv venv
-   ```
+#### 1. Cloner le dépôt
 
-3. **Activer l'environnement virtuel**
-   ```bash
-   # Sur macOS/Linux
-   source venv/bin/activate
-   
-   # Sur Windows
-   venv\Scripts\activate
-   ```
+```bash
+git clone <url-du-depot>
+cd projet_python_next_u
+```
 
-4. **Installer les dépendances**
-   ```bash
-   pip install -r requirements.txt
-   ```
+#### 2. Créer l'environnement virtuel
 
-## 🏃 Démarrage
+L'environnement virtuel isole les dépendances du projet :
 
-1. **Activer l'environnement virtuel** (si pas déjà fait)
-   ```bash
-   source venv/bin/activate
-   ```
+```bash
+python3 -m venv venv
+```
 
-2. **Démarrer l'application Flask**
-   ```bash
-   export FLASK_APP=app.py
-   flask run
-   ```
-   
-   Ou directement :
-   ```bash
-   python app.py
-   ```
+#### 3. Activer l'environnement virtuel
 
-3. **Accéder à l'application**
-   - Ouvrir un navigateur à l'adresse : http://127.0.0.1:5000
-   - Vérifier l'état : http://127.0.0.1:5000/health
+**Sur macOS/Linux :**
+```bash
+source venv/bin/activate
+```
 
-## 📁 Structure du Projet
+**Sur Windows :**
+```bash
+venv\Scripts\activate
+```
+
+Vous devriez voir `(venv)` apparaître dans votre terminal.
+
+#### 4. Installer les dépendances
+
+```bash
+pip install -r requirements.txt
+```
+
+Cette commande installe toutes les bibliothèques nécessaires :
+- **Flask** : framework web
+- **Pandas** : manipulation de données
+- **Folium** : génération de cartes interactives
+- **Matplotlib/Seaborn** : création de graphiques
+- **ReportLab** : génération de PDF
+
+#### 5. Vérifier les données
+
+Assurez-vous que les fichiers CSV sont présents :
+- `data/RP2021_mobpro/Commune_1001-13101_2.csv` (données de mobilité)
+- `ensemble/donnees_communes.csv` (données démographiques)
+- `ensemble/donnees_regions.csv` (données régionales)
+
+### Démarrage de l'Application
+
+#### Option 1 : Utiliser le script de démarrage
+
+```bash
+./start.sh
+```
+
+#### Option 2 : Démarrer manuellement
+
+```bash
+# Activer l'environnement virtuel (si pas déjà fait)
+source venv/bin/activate
+
+# Démarrer Flask
+export FLASK_APP=app.py
+flask run
+```
+
+Ou directement :
+```bash
+python app.py
+```
+
+#### Accéder à l'application
+
+- Ouvrir un navigateur à l'adresse : **http://127.0.0.1:5000**
+- Vérifier l'état de l'application : **http://127.0.0.1:5000/health**
+
+---
+
+## 📖 Guide d'Utilisation
+
+### Page d'Accueil (`/`)
+
+La page d'accueil affiche :
+- **Statistiques globales** : pourcentages moyens de chaque mode de transport
+- **Top 5 Communes** : communes les plus peuplées avec leur indice de mobilité verte
+- **Top 5 Régions** : régions les plus peuplées avec leurs indicateurs
+- **Cartes interactives** : visualisation géographique des données
+- **Graphiques statistiques** : distribution des temps de trajet, usage des transports
+
+### Page Communes (`/mobilite/communes`)
+
+Cette page permet d'analyser les données par commune avec :
+
+#### Filtres Disponibles
+
+1. **Région** : Filtrer par région française (ex: Île-de-France, Auvergne-Rhône-Alpes)
+2. **Département** : Filtrer par département (apparaît après sélection d'une région)
+3. **Tranche d'Âge** : Filtrer par groupe d'âge
+   - 0-18 ans
+   - 19-35 ans
+   - 36-50 ans
+   - 51-65 ans
+   - 65+ ans
+
+#### Tableau des Indicateurs
+
+Pour chaque commune, le tableau affiche :
+- **Nom de la commune**
+- **Population** (ajustée selon la tranche d'âge si filtre actif)
+- **Pourcentages par type de transport** :
+  - 🚴 Vélo
+  - 🚗 Voiture
+  - 🚌 Transports en commun
+  - 🚶 Marche à pied
+  - 🏍️ Deux-roues motorisé
+  - ❌ Pas de transport
+- **Indice de mobilité verte** : score combinant vélo + transports en commun
+- **Temps de trajet moyen** : en minutes
+
+#### Fonctionnalités
+
+- **Pagination** : 10 communes par page (configurable)
+- **Détails** : Cliquer sur une commune ouvre une modale avec les détails complets
+- **Export CSV** : Télécharger les données filtrées en CSV
+- **Export PDF** : Générer un rapport PDF avec les données filtrées
+
+### Page Régions (`/mobilite/regions`)
+
+Similaire à la page Communes, mais agrégée au niveau régional :
+
+- **Filtre par tranche d'âge** uniquement
+- **Indicateurs agrégés** pour chaque région
+- **Export CSV/PDF** des données régionales
+
+---
+
+## 🛠️ Structure Technique du Projet
+
+### Organisation des Fichiers
 
 ```
 projet_python_next_u/
-├── app/                    # Code source de l'application Flask
-│   ├── __init__.py         # Initialisation de l'application
-│   └── main.py             # Routes principales
-├── data/                   # Données du projet
-│   ├── raw/                # Données brutes (non modifiées)
-│   └── processed/          # Données traitées
-├── templates/              # Templates HTML (Jinja2)
-├── static/                 # Fichiers statiques (CSS, JS, images)
-├── tests/                  # Tests unitaires
-├── docs/                   # Documentation
-├── venv/                   # Environnement virtuel (ignoré par Git)
-├── app.py                  # Point d'entrée de l'application
-├── requirements.txt        # Dépendances Python
-└── README.md              # Ce fichier
+├── app/                          # Code source de l'application
+│   ├── __init__.py               # Factory Flask (création de l'app)
+│   ├── main.py                   # Routes principales (page d'accueil)
+│   ├── routes/                   # Routes organisées par fonctionnalité
+│   │   ├── mobilite.py          # Routes communes/régions + API JSON
+│   │   ├── export.py            # Routes export CSV/PDF
+│   │   └── visualizations.py    # Routes cartes et graphiques
+│   ├── utils/                   # Utilitaires
+│   │   ├── data_loader.py       # Chargement CSV avec cache
+│   │   └── cache.py             # Cache des statistiques globales
+│   └── visualizations/          # Génération de visualisations
+│       ├── maps.py              # Cartes Folium interactives
+│       └── charts.py            # Graphiques Matplotlib/Seaborn
+├── templates/                    # Templates HTML (Jinja2)
+│   ├── base/                    # Templates de base
+│   ├── pages/                   # Pages principales
+│   │   └── home.html           # Page d'accueil
+│   └── mobilite/                # Pages mobilité
+│       ├── communes.html       # Page communes
+│       └── regions.html        # Page régions
+├── static/                      # Fichiers statiques
+│   ├── css/                    # Styles CSS
+│   ├── js/                     # JavaScript
+│   ├── images/                 # Images
+│   └── map_*.html              # Cartes statiques pré-générées
+├── data/                        # Données CSV
+│   ├── RP2021_mobpro/          # Données de mobilité INSEE
+│   └── processed/              # Données traitées (optionnel)
+├── ensemble/                   # Données géographiques INSEE
+│   ├── donnees_communes.csv    # Liste des communes
+│   ├── donnees_regions.csv     # Liste des régions
+│   └── ...
+├── scripts/                     # Scripts utilitaires
+│   ├── extract_age_ranges.py   # Extraction des tranches d'âge
+│   └── generate_maps_with_tooltips.py  # Génération de cartes
+├── docs/                        # Documentation
+├── app.py                       # Point d'entrée Flask
+├── script.py                   # Script de calcul des statistiques
+├── requirements.txt            # Dépendances Python
+└── README.md                   # Ce fichier
 ```
 
-## 🛠️ Technologies Utilisées
+### Technologies Utilisées
 
-- **Backend** : Python 3.11 + Flask
-- **Données** : Pandas
-- **Visualisations** : Folium (cartes), Matplotlib, Seaborn (graphiques)
-- **Frontend** : HTML5 + Bootstrap + Jinja2
+#### Backend
+- **Python 3.11** : Langage de programmation
+- **Flask 3.1.2** : Framework web léger et flexible
+- **Pandas 2.3.3** : Manipulation et analyse de données
+- **NumPy 2.3.5** : Calculs numériques
 
-## 📸 Captures d'écran de l'application
+#### Visualisations
+- **Folium 0.20.0** : Cartes interactives basées sur Leaflet
+- **Matplotlib 3.10.7** : Création de graphiques
+- **Seaborn 0.13.2** : Graphiques statistiques avancés
 
-Cette section présente les différentes vues de l'application web pour aider les développeurs à comprendre l'interface utilisateur et les fonctionnalités disponibles.
+#### Frontend
+- **HTML5** : Structure des pages
+- **Bootstrap 5** : Framework CSS (via CDN)
+- **JavaScript** : Interactivité (chargement AJAX, modales)
+- **Jinja2** : Moteur de templates Flask
 
-### Vue 1 : Page d'accueil
-![Page d'accueil](screenshot-accueil.png)
-*Vue d'ensemble de la page d'accueil du tableau de bord, présentant la navigation principale et l'interface utilisateur.*
+#### Export
+- **ReportLab 4.2.5** : Génération de PDF
+- **Pandas** : Export CSV natif
 
-### Vue 2 : Navigation et menu
-![Navigation](screenshot-navigation.png)
-*Interface de navigation montrant les différents menus et options disponibles pour accéder aux fonctionnalités de l'application.*
+---
 
-### Vue 3 : Visualisation des données
-![Visualisation](screenshot-visualisation-donnees.png)
-*Affichage des données de mobilité avec graphiques et indicateurs pour l'analyse comparative des zones géographiques.*
+## 🔍 Fonctionnement Détaillé
 
-### Vue 4 : Carte interactive
-![Carte interactive](screenshot-carte-interactive.png)
-*Carte interactive générée avec Folium montrant la répartition géographique des données de mobilité en France.*
+### 1. Chargement des Données
 
-### Vue 5 : Détails des communes
-![Détails communes](screenshot-details-communes.png)
-*Vue détaillée des informations par commune, permettant l'analyse fine des inégalités de mobilité à l'échelle locale.*
+Le fichier `app/utils/data_loader.py` gère le chargement des CSV avec un système de cache :
 
-### Vue 6 : Analyse régionale
-![Analyse régionale](screenshot-analyse-regionale.png)
-*Vue d'analyse régionale avec comparaison des indicateurs de mobilité entre différentes régions françaises.*
+```python
+# Exemple simplifié
+def load_mobility_data(self, use_cache=True):
+    # Vérifier le cache
+    if cache_existe_et_fichier_non_modifié:
+        return cache
+    
+    # Charger depuis le fichier CSV
+    df = pd.read_csv('data/RP2021_mobpro/Commune_1001-13101_2.csv',
+                     usecols=['COMMUNE', 'TRANS', 'AGEREVQ', 'IPONDI'])
+    
+    # Mettre en cache
+    cache = df.copy()
+    return df
+```
+
+**Pourquoi un cache ?**
+- Le fichier CSV fait ~670 000 lignes
+- Sans cache, chaque requête rechargerait le fichier (lent)
+- Le cache vérifie si le fichier a été modifié avant de le recharger
+
+### 2. Calcul des Indicateurs
+
+Dans `app/routes/mobilite.py`, l'API `/api/communes` :
+
+1. **Charge les données** de mobilité et de communes
+2. **Applique les filtres** (région, département, âge)
+3. **Groupe par commune** et calcule les pourcentages :
+   ```python
+   # Exemple : Pourcentage de vélo par commune
+   grouped = df.groupby(['COMMUNE_CODE', 'TRANS']).sum()
+   total_by_commune = grouped.groupby('COMMUNE_CODE').sum()
+   velo_percentage = (velo_count / total_by_commune) * 100
+   ```
+4. **Retourne en JSON** pour le frontend
+
+### 3. Affichage Dynamique
+
+Le fichier `templates/mobilite/communes.html` contient du JavaScript qui :
+
+1. **Appelle l'API** quand les filtres changent :
+   ```javascript
+   function loadCommunes() {
+       fetch('/mobilite/api/communes?region=' + region + '&age=' + age)
+           .then(response => response.json())
+           .then(data => {
+               // Construire le tableau HTML
+               buildTable(data.communes);
+           });
+   }
+   ```
+
+2. **Construit le tableau** dynamiquement (sans recharger la page)
+3. **Gère la pagination** côté client
+4. **Ouvre les modales** de détails au clic
+
+### 4. Export des Données
+
+Le fichier `app/routes/export.py` :
+
+- **CSV** : Utilise `pandas.to_csv()` avec les données filtrées
+- **PDF** : Utilise `reportlab` pour créer un document structuré avec :
+  - En-tête avec filtres appliqués
+  - Tableau formaté
+  - Statistiques résumées
+
+---
+
+## 📊 Sources de Données
+
+### Données Démographiques
+
+- **Fichier** : `ensemble/donnees_communes.csv`
+- **Source** : INSEE (Institut National de la Statistique)
+- **Contenu** :
+  - Codes INSEE des communes (COM, CODCOM)
+  - Noms des communes
+  - Codes région (REG) et département (DEP)
+  - Population totale (PTOT)
+
+### Données de Mobilité
+
+- **Fichier** : `data/RP2021_mobpro/Commune_1001-13101_2.csv`
+- **Source** : INSEE - Recensement de la Population 2021
+- **Contenu** : ~670 000 lignes avec :
+  - **COMMUNE** : Nom et code de la commune
+  - **TRANS** : Type de transport utilisé
+  - **AGEREVQ** : Tranche d'âge de l'individu
+  - **IPONDI** : Poids statistique (pour les calculs)
+
+### Types de Transport
+
+Les valeurs possibles pour `TRANS` :
+- "Voiture, camion, fourgonnette"
+- "Vélo (y compris à assistance électrique)"
+- "Transports en commun"
+- "Marche à pied (ou rollers, patinette)"
+- "Deux-roues motorisé"
+- "Pas de transport"
+
+---
+
+## 🎓 Points Pédagogiques
+
+### Concepts Informatiques Illustrés
+
+1. **Architecture Web** :
+   - Séparation client/serveur
+   - API REST (endpoints JSON)
+   - Templates côté serveur (Jinja2)
+
+2. **Traitement de Données** :
+   - Manipulation de gros volumes (670k lignes)
+   - Agrégation et groupement (Pandas)
+   - Calculs statistiques (pourcentages, moyennes)
+
+3. **Optimisation** :
+   - Cache en mémoire pour éviter les rechargements
+   - Chargement sélectif de colonnes (`usecols`)
+   - Pagination pour limiter les données affichées
+
+4. **Interactivité** :
+   - AJAX pour charger les données sans recharger la page
+   - Filtres dynamiques
+   - Modales pour les détails
+
+5. **Visualisation** :
+   - Cartes interactives (Folium/Leaflet)
+   - Graphiques statistiques (Matplotlib/Seaborn)
+   - Export de données (CSV, PDF)
+
+---
 
 ## 👥 Équipe
 
 - **Dev 1** : Junior
 - **Dev 2** : Baptiste
-- **Product Owner** : [Votre nom]
-
-## 📝 Workflow Git
-
-- **main** : Branche principale (code stable)
-- **develop** : Branche de développement (intégration)
-- **feature/*** : Branches pour nouvelles fonctionnalités
-
-### Structure des branches
-
-```bash
-# Voir toutes les branches
-git branch -a
-
-# Branches principales
-develop          # Branche de développement (active par défaut)
-feature/*         # Branches pour nouvelles fonctionnalités
-```
-
-### Créer une nouvelle fonctionnalité
-```bash
-# 1. S'assurer d'être sur develop et à jour
-git checkout develop
-git pull origin develop  # Si dépôt distant existe
-
-# 2. Créer une nouvelle branche feature
-git checkout -b feature/nom-fonctionnalite
-
-# 3. Développer la fonctionnalité
-# ... faire vos modifications ...
-
-# 4. Commiter les changements
-git add .
-git commit -m "Description claire de la fonctionnalité"
-
-# 5. Pousser la branche (si dépôt distant existe)
-git push origin feature/nom-fonctionnalite
-
-# 6. Après validation, merger dans develop
-git checkout develop
-git merge feature/nom-fonctionnalite
-git branch -d feature/nom-fonctionnalite  # Supprimer la branche locale
-```
-
-### Exemples de noms de branches feature
-- `feature/nettoyage-donnees`
-- `feature/cartes-folium`
-- `feature/export-pdf`
-- `feature/filtres-geographiques`
-
-## 📚 Documentation
-
-- Guide Sprint 1 : `SPRINT1_GUIDE.md`
-- Guide Product Owner : `PO_GUIDE.md`
-- Cartes Trello : `TRELLO_CARDS.md`
-
-## 🐛 Dépannage
-
-### Erreur : "flask: command not found"
-**Solution** : Vérifier que l'environnement virtuel est activé (`source venv/bin/activate`)
-
-### Erreur : "ModuleNotFoundError: No module named 'flask'"
-**Solution** : Réinstaller les dépendances (`pip install -r requirements.txt`)
-
-### Erreur : "Address already in use"
-**Solution** : Changer le port (`flask run --port=5001`)
-
-## 📄 Licence
-
-[À définir]
-
----
-
-**Dernière mise à jour** : Sprint 1 - Configuration initiale
