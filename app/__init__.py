@@ -26,5 +26,13 @@ def create_app():
     from app.routes.mobilite import bp as mobilite_bp
     app.register_blueprint(mobilite_bp)
     
+    # Enregistrer les routes d'export
+    from app.routes.export import bp as export_bp
+    app.register_blueprint(export_bp)
+    
+    # Enregistrer les routes de visualisation
+    from app.routes.visualizations import bp as visualizations_bp
+    app.register_blueprint(visualizations_bp)
+    
     return app
 

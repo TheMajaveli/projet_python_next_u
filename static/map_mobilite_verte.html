@@ -26263,5 +26263,56 @@
                 {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.5, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7.6923076923076925, "stroke": true, "weight": 3}
             ).addTo(map_b78cea322060eeb7d9d1b1cbd866e3dd);
         
+            // Ajouter des tooltips à tous les marqueurs
+            (function() {
+                var map = map_b78cea322060eeb7d9d1b1cbd866e3dd;
+                var markers = [];
+                
+                // Collecter tous les marqueurs de la carte
+                map.eachLayer(function(layer) {
+                    if (layer instanceof L.CircleMarker) {
+                        markers.push(layer);
+                    }
+                });
+                
+                // Ajouter des tooltips basés sur la couleur et les coordonnées
+                markers.forEach(function(marker) {
+                    var lat = marker.getLatLng().lat;
+                    var lng = marker.getLatLng().lng;
+                    var color = marker.options.color || marker.options.fillColor || 'blue';
+                    var radius = marker.options.radius || 5;
+                    
+                    // Déterminer le niveau de mobilité verte selon la couleur
+                    var mobilityLevel = '';
+                    if (color === 'green' || color === '#00ff00') {
+                        mobilityLevel = 'Mobilité Verte: Élevée';
+                    } else if (color === 'orange' || color === '#ffa500' || color === 'yellow' || color === '#ffff00') {
+                        mobilityLevel = 'Mobilité Verte: Moyenne';
+                    } else if (color === 'red' || color === '#ff0000') {
+                        mobilityLevel = 'Mobilité Verte: Faible';
+                    } else {
+                        mobilityLevel = 'Commune';
+                    }
+                    
+                    // Créer le texte du tooltip
+                    var tooltipText = '<b>' + mobilityLevel + '</b><br>Lat: ' + lat.toFixed(4) + '<br>Lng: ' + lng.toFixed(4);
+                    
+                    // Ajouter le tooltip
+                    marker.bindTooltip(tooltipText, {
+                        permanent: false,
+                        direction: 'top',
+                        offset: [0, -10]
+                    });
+                    
+                    // Ajouter aussi un popup au clic
+                    var popupText = '<div style="min-width: 150px;"><b>' + mobilityLevel + '</b><br>' +
+                        'Coordonnées:<br>Latitude: ' + lat.toFixed(6) + '<br>Longitude: ' + lng.toFixed(6) + 
+                        '<br>Taille: ' + radius.toFixed(1) + '</div>';
+                    marker.bindPopup(popupText);
+                });
+                
+                console.log('Tooltips ajoutés à ' + markers.length + ' marqueurs');
+            })();
+        
 </script>
 </html>

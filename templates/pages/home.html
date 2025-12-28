@@ -8,7 +8,7 @@
     <div class="col-12 col-lg-10 mx-auto">
         <div class="text-center mb-4">
             <h1 class="mb-4" style="font-size: 3rem; font-weight: 800; letter-spacing: -0.03em;">
-                Analyse des inégalités<br>de mobilité en France {{test}}
+                Analyse des inégalités<br>de mobilité en France 
             </h1>
             <p class="lead" style="font-size: 1.25rem; max-width: 700px; margin: 0 auto;">
                 Comparez les conditions de mobilité entre communes et zones, identifiez les zones mal desservies,
@@ -259,234 +259,76 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 d-flex align-items-center gap-2">
-                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <g opacity="0.2">
-                                <rect x="10" y="10" width="13" height="13" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                                <rect x="23" y="10" width="21" height="13" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                                <rect x="44" y="10" width="34" height="13" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                                <rect x="10" y="23" width="13" height="21" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                                <rect x="23" y="23" width="21" height="21" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                                <rect x="44" y="23" width="34" height="21" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                            </g>
-                            <circle cx="50" cy="50" r="5" fill="currentColor" />
-                        </svg>
-                        Par Commune
-                    </h5>
+                    <h5 class="mb-0">Top 5 Communes - Mobilité Verte</h5>
                 </div>
                 <div class="card-body">
-                    <div class="placeholder-section">
-                        <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-                            style="margin-bottom: 1.5rem; opacity: 0.6;">
-                            <g opacity="0.2">
-                                <rect x="10" y="10" width="13" height="13" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                                <rect x="23" y="10" width="21" height="13" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                                <rect x="44" y="10" width="34" height="13" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                                <rect x="10" y="23" width="13" height="21" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                                <rect x="23" y="23" width="21" height="21" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                                <rect x="44" y="23" width="34" height="21" fill="none" stroke="currentColor"
-                                    stroke-width="0.5" />
-                            </g>
-                            <circle cx="50" cy="50" r="5" fill="currentColor" />
-                        </svg>
-                        <h5>Indicateurs par Commune</h5>
-                        <p>Consultez les indicateurs détaillés pour une commune spécifique.</p>
-                    </div>
-                    <a href="{{ url_for('mobilite.communes') }}" class="btn btn-primary mt-3">Voir les communes →</a>
-                    <p class="text-muted mt-2"><small>Placeholder - Carte 24</small></p>
+                    {% if top_communes %}
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Commune</th>
+                                        <th>Mobilité Verte</th>
+                                        <th>Temps Trajet</th>
+                                        <th>Taux Vélo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for commune in top_communes[:5] %}
+                                    <tr>
+                                        <td><strong>{{ commune.get('LIBGEO', commune.get('Commune', 'N/A')) }}</strong></td>
+                                        <td>{{ "%.1f"|format(commune.get('green_mobility_index', 0)) }}%</td>
+                                        <td>{{ "%.1f"|format(commune.get('avg_commute_time', 0)) }} min</td>
+                                        <td>{{ "%.1f"|format(commune.get('bike_usage_rate', 0)) }}%</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Aucune donnée disponible</p>
+                    {% endif %}
+                    <a href="{{ url_for('mobilite.communes') }}" class="btn btn-primary mt-3">Voir toutes les communes →</a>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 d-flex align-items-center gap-2">
-                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="30" cy="30" r="8" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="50" cy="30" r="13" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="70" cy="30" r="5" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="30" cy="70" r="5" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="50" cy="70" r="8" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="70" cy="70" r="13" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="50" cy="50" r="3" fill="currentColor" />
-                        </svg>
-                        Par Région
-                    </h5>
+                    <h5 class="mb-0">Top 5 Régions - Mobilité Verte</h5>
                 </div>
                 <div class="card-body">
-                    <div class="placeholder-section">
-                        <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-                            style="margin-bottom: 1.5rem; opacity: 0.6;">
-                            <circle cx="30" cy="30" r="8" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="50" cy="30" r="13" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="70" cy="30" r="5" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="30" cy="70" r="5" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="50" cy="70" r="8" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="70" cy="70" r="13" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <circle cx="50" cy="50" r="3" fill="currentColor" />
-                        </svg>
-                        <h5>Indicateurs par Région</h5>
-                        <p>Visualisez les indicateurs agrégés par région avec comparaisons.</p>
-                    </div>
-                    <a href="{{ url_for('mobilite.regions') }}" class="btn btn-primary mt-3">Voir les régions →</a>
-                    <p class="text-muted mt-2"><small>Placeholder - Carte 25</small></p>
+                    {% if top_regions %}
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Région</th>
+                                        <th>Mobilité Verte</th>
+                                        <th>Temps Trajet</th>
+                                        <th>Taux Vélo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for region in top_regions %}
+                                    <tr>
+                                        <td><strong>{{ region.get('Région', region.get('REGION', 'N/A')) }}</strong></td>
+                                        <td>{{ "%.1f"|format(region.get('green_mobility_index', 0)) }}%</td>
+                                        <td>{{ "%.1f"|format(region.get('avg_commute_time', 0)) }} min</td>
+                                        <td>{{ "%.1f"|format(region.get('bike_usage_rate', 0)) }}%</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Aucune donnée disponible</p>
+                    {% endif %}
+                    <a href="{{ url_for('mobilite.regions') }}" class="btn btn-primary mt-3">Voir toutes les régions →</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Filtres -->
-<section id="filtres" class="mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Filtres et Recherche</h2>
-        <span class="text-muted" style="font-size: 0.875rem;">Personnalisez votre analyse</span>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0 d-flex align-items-center gap-2">
-                <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="40" cy="40" r="21" fill="none" stroke="currentColor" stroke-width="3"
-                        stroke-linecap="round" />
-                    <path d="M 40 40 A 5 5 0 0 1 45 40 A 8 8 0 0 1 45 32" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" opacity="0.6" />
-                    <line x1="55" y1="55" x2="65" y2="65" stroke="currentColor" stroke-width="3"
-                        stroke-linecap="round" />
-                </svg>
-                Filtres de Recherche
-            </h5>
-        </div>
-        <div class="card-body">
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Zone Géographique</label>
-                    <select class="form-select">
-                        <option>Toutes les zones</option>
-                        <option>Par département</option>
-                        <option>Par région</option>
-                        <option>Par commune</option>
-                    </select>
-                    <p class="text-muted mt-2"><small>Placeholder - Carte 26</small></p>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Type de Transport</label>
-                    <select class="form-select">
-                        <option>Tous les types</option>
-                        <option>Train</option>
-                        <option>Bus</option>
-                        <option>Vélo</option>
-                        <option>Voiture</option>
-                    </select>
-                    <p class="text-muted mt-2"><small>Placeholder - Carte 27</small></p>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Tranche d'Âge</label>
-                    <select class="form-select">
-                        <option>Toutes les tranches</option>
-                        <option>0-18 ans</option>
-                        <option>19-35 ans</option>
-                        <option>36-50 ans</option>
-                        <option>51-65 ans</option>
-                        <option>65+ ans</option>
-                    </select>
-                    <p class="text-muted mt-2"><small>Placeholder - Carte 28</small></p>
-                </div>
-            </div>
-            <button class="btn btn-primary mt-3">Appliquer les filtres</button>
-        </div>
-    </div>
-</section>
-
-<!-- Exports -->
-<section id="exports" class="mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Exports</h2>
-        <span class="text-muted" style="font-size: 0.875rem;">Téléchargez vos données</span>
-    </div>
-    <div class="row g-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0 d-flex align-items-center gap-2">
-                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="10" y="10" width="80" height="80" fill="none" stroke="currentColor"
-                                stroke-width="2" />
-                            <line x1="10" y1="30" x2="90" y2="30" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <line x1="10" y1="70" x2="90" y2="70" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <line x1="30" y1="10" x2="30" y2="90" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                            <line x1="70" y1="10" x2="70" y2="90" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.6" />
-                        </svg>
-                        Export CSV
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <p>Exportez les données filtrées au format CSV pour analyse externe.</p>
-                    <button class="btn btn-outline-primary">Télécharger CSV</button>
-                    <p class="text-muted mt-2"><small>Placeholder - Carte 30</small></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0 d-flex align-items-center gap-2">
-                        <svg class="fib-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="15" y="10" width="70" height="89" fill="none" stroke="currentColor"
-                                stroke-width="2.5" rx="2" />
-                            <line x1="25" y1="25" x2="75" y2="25" stroke="currentColor" stroke-width="2"
-                                opacity="0.6" />
-                            <line x1="25" y1="35" x2="75" y2="35" stroke="currentColor" stroke-width="2"
-                                opacity="0.6" />
-                            <line x1="25" y1="45" x2="60" y2="45" stroke="currentColor" stroke-width="2"
-                                opacity="0.6" />
-                            <line x1="25" y1="55" x2="75" y2="55" stroke="currentColor" stroke-width="2"
-                                opacity="0.6" />
-                            <line x1="25" y1="65" x2="70" y2="65" stroke="currentColor" stroke-width="2"
-                                opacity="0.6" />
-                            <path d="M 15 10 A 5 5 0 0 1 20 10" fill="none" stroke="currentColor" stroke-width="1.5"
-                                opacity="0.4" />
-                        </svg>
-                        Export PDF
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <p>Générez un rapport PDF personnalisé avec indicateurs et graphiques.</p>
-                    <button class="btn btn-outline-primary">Générer PDF</button>
-                    <p class="text-muted mt-2"><small>Placeholder - Carte 31-32</small></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 {% endblock %}
