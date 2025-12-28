@@ -1,0 +1,93 @@
+{#
+Macros Jinja2 pour les éléments de mobilité réutilisables
+===========================================================
+
+Les macros permettent de créer des composants réutilisables dans Jinja2.
+Cela améliore la maintenabilité et évite la duplication de code.
+
+Usage:
+{% from 'macros/mobilite_macros.html' import kpi_card, placeholder_section %}
+{{ kpi_card("Label", "Valeur", "Change", "positive") }}
+#}
+
+{# Macro pour afficher une carte KPI #}
+{% macro kpi_card(label, value, change, change_type="positive") %}
+<div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="kpi-card fade-in">
+        <div class="kpi-label">{{ label }}</div>
+        <div class="kpi-value">{{ value }}</div>
+        <div class="kpi-change {{ change_type }}">
+            <span style="font-size: 1rem;">{% if change_type == "positive" %}↗{% else %}↘{% endif %}</span>
+            <span>{{ change }}</span>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{# Macro pour afficher une section placeholder #}
+{% macro placeholder_section(icon_svg, title, description, card_ref="") %}
+<div class="placeholder-section">
+    {{ icon_svg|safe }}
+    <h4>{{ title }}</h4>
+    <p>{{ description }}</p>
+    {% if card_ref %}
+    <p class="text-muted"><small>Placeholder - {{ card_ref }}</small></p>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{# Macro pour afficher une carte de fonctionnalité #}
+{% macro feature_card(icon_svg, title, description, button_text="", button_link="#", card_ref="") %}
+<div class="card h-100">
+    <div class="card-header">
+        <h5 class="mb-0 d-flex align-items-center gap-2">
+            {{ icon_svg|safe }}
+            {{ title }}
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="placeholder-section">
+            <svg class="fib-icon-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1.5rem; opacity: 0.6;">
+                {{ icon_svg|safe }}
+            </svg>
+            <h5>{{ title }}</h5>
+            <p>{{ description }}</p>
+            {% if button_text %}
+            <a href="{{ button_link }}" class="btn btn-primary mt-3">{{ button_text }}</a>
+            {% endif %}
+            {% if card_ref %}
+            <p class="text-muted mt-2"><small>Placeholder - {{ card_ref }}</small></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{# Macro pour afficher un indicateur avec badge #}
+{% macro indicator_badge(value, unit="", color="primary") %}
+<span class="badge bg-{{ color }} fs-6">{{ value }}{{ unit }}</span>
+{% endmacro %}
+
+{# Macro pour afficher un message d'alerte #}
+{% macro alert_message(type, title, message, dismissible=true) %}
+<div class="alert alert-{{ type }}{% if dismissible %} alert-dismissible fade show{% endif %}" role="alert">
+    {% if title %}
+    <h6 class="alert-heading">{{ title }}</h6>
+    {% endif %}
+    {{ message }}
+    {% if dismissible %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{# Macro pour afficher un loader/spinner #}
+{% macro loading_spinner(text="Chargement...") %}
+<div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">{{ text }}</span>
+    </div>
+    <p class="mt-2 text-muted">{{ text }}</p>
+</div>
+{% endmacro %}
+

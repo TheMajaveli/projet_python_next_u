@@ -1,5 +1,102 @@
-data
-ensemble
-*.html
-.venv/
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environnement virtuel
+venv/
+env/
+ENV/
+.venv
+.venv/
+
+# Variables d'environnement
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Flask
+instance/
+.webassets-cache
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+
+# Données sensibles (si nécessaire)
+data/raw/*.csv
+data/raw/*.xlsx
+data/raw/*.json
+!data/raw/.gitkeep
+
+# Logs
+*.log
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Documentation markdown (anciens guides)
+SPRINT1_GUIDE.md
+TRELLO_CARDS.md
+PO_GUIDE.md
+QUICK_START.md
+SPRINT1_COMPLETION.md
+SPRINT2_GUIDE.md
+SPRINT2_COMPLETION.md
+SPRINT3_GUIDE.md
+SPRINT3_COMPLETION.md
+SPRINT4_GUIDE.md
+SPRINT4_COMPLETION.md
+SPRINT5_GUIDE.md
+SPRINT5_COMPLETION.md
+SPRINT6_GUIDE.md
+SPRINT6_COMPLETION.md
+
+CARTE2_COMPLETION.md
+CARTE2_GUIDE.md
+CARTE3_COMPLETION.md
+CARTE3_GUIDE.md
+CARTE4_COMPLETION.md
+CARTE4_GUIDE.md
+CARTE5_COMPLETION.md
+CARTE5_GUIDE.md
+CARTE6_COMPLETION.md
+CARTE6_GUIDE.md
+CARTES_UI.md
+UI_IMPLEMENTATION.md
+UI_MODERNIZATION.md
+
+TEMPLATE_STRUCTURE.md
+LOGO_FIBONACCI.md
+
+# Fichiers de données volumineux
+data/RP2021_mobpro/FD_MOBPRO_2021.csv
+data/LocalisationCommune.parquet
+
+# Fichiers HTML générés (mais garder map_communes.html)
+# *.html
