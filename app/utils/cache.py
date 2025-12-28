@@ -42,3 +42,7 @@ def clear_cache():
     _stats_cache_timestamp = 0
     logger.info("Cache effacé")
 
+
+
+
+

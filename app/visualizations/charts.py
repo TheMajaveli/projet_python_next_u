@@ -188,3 +188,7 @@ def create_bar_chart(
     plt.close()
     return None
 
+
+
+
+
